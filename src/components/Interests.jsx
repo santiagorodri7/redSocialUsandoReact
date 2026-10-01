@@ -1,5 +1,3 @@
-import React from 'react'
-
 export default function Interests() {
   const tags = [
     { label: 'News', cls: 'w3-theme-d5' }, { label: 'W3Schools', cls: 'w3-theme-d4' },

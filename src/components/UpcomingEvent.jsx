@@ -1,6 +1,3 @@
-// UpcomingEvent.jsx
-import React from 'react'
-
 export default function UpcomingEvent() {
   return (
     <div className="w3-card w3-round w3-white w3-center">

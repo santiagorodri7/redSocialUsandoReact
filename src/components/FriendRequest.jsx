@@ -1,9 +1,7 @@
 // FriendRequest.jsx
-import React from 'react'
-
 export default function FriendRequest() {
   return (
-    <div className="w3-card w3-round w3-white w3-center">
+    <div id="friend-requests" className="w3-card w3-round w3-white w3-center" style={{ scrollMarginTop: '80px' }}>
       <div className="w3-container">
         <p>Friend Request</p>
         <img src="https://www.w3schools.com/w3images/avatar6.png" alt="Avatar" style={{ width: '50%' }} />

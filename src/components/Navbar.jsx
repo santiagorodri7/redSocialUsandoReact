@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
 
   return (
     <>
-      <div className="w3-top">
+      <div className="w3-top" id="top">
         <div className="w3-bar w3-theme-d2 w3-left-align w3-large">
           
           {/* Se corrigió la etiqueta de apertura del botón de menú */}
@@ -17,40 +18,40 @@ export default function Navbar() {
             <i className="fa fa-bars"></i>
           </button>
 
-          <a href="#" className="w3-bar-item w3-button w3-padding-large w3-theme-d4">
+          <Link to="/" className="w3-bar-item w3-button w3-padding-large w3-theme-d4" aria-label="Inicio">
             <i className="fa fa-home w3-margin-right"></i>Logo
-          </a>
-          <a href="#" className="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="News">
+          </Link>
+          <Link to="/posts" className="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Posts" aria-label="Ir a publicaciones">
             <i className="fa fa-globe"></i>
-          </a>
-          <a href="#" className="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Account Settings">
+          </Link>
+          <Link to="/profile" className="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="My Profile" aria-label="Ir a mi perfil">
             <i className="fa fa-user"></i>
-          </a>
-          <a href="#" className="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Messages">
+          </Link>
+          <Link to="/comments" className="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Comments" aria-label="Ir a comentarios">
             <i className="fa fa-envelope"></i>
-          </a>
+          </Link>
           <div className="w3-dropdown-hover w3-hide-small">
-            <button className="w3-button w3-padding-large" title="Notifications">
+            <Link to="/comments" className="w3-button w3-padding-large" title="Notifications" aria-label="Ir a actividad y comentarios">
               <i className="fa fa-bell"></i>
               <span className="w3-badge w3-right w3-small w3-green">3</span>
-            </button>
+            </Link>
             <div className="w3-dropdown-content w3-card-4 w3-bar-block" style={{ width: '300px' }}>
-              <a href="#" className="w3-bar-item w3-button">One new friend request</a>
-              <a href="#" className="w3-bar-item w3-button">John Doe posted on your wall</a>
-              <a href="#" className="w3-bar-item w3-button">Jane likes your post</a>
+              <Link to="/friend-requests" className="w3-bar-item w3-button">One new friend request</Link>
+              <Link to="/posts" className="w3-bar-item w3-button">John Doe posted on your wall</Link>
+              <Link to="/posts" className="w3-bar-item w3-button">Jane likes your post</Link>
             </div>
           </div>
-          <a href="#" className="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white" title="My Account">
+          <Link to="/profile" className="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white" title="My Account" aria-label="Ir a mi perfil">
             <img src="https://www.w3schools.com//w3images/avatar2.png" className="w3-circle" style={{ height: '23px', width: '23px' }} alt="Avatar" />
-          </a>
+          </Link>
         </div>
       </div>
 
       <div id="navDemo" className={`w3-bar-block w3-theme-d2 w3-hide-large w3-hide-medium w3-large ${menuOpen ? 'w3-show' : 'w3-hide'}`}>
-        <a href="#" className="w3-bar-item w3-button w3-padding-large">Link 1</a>
-        <a href="#" className="w3-bar-item w3-button w3-padding-large">Link 2</a>
-        <a href="#" className="w3-bar-item w3-button w3-padding-large">Link 3</a>
-        <a href="#" className="w3-bar-item w3-button w3-padding-large">My Profile</a>
+        <Link to="/posts" onClick={() => setMenuOpen(false)} className="w3-bar-item w3-button w3-padding-large">Posts</Link>
+        <Link to="/profile" onClick={() => setMenuOpen(false)} className="w3-bar-item w3-button w3-padding-large">My Profile</Link>
+        <Link to="/comments" onClick={() => setMenuOpen(false)} className="w3-bar-item w3-button w3-padding-large">Comments</Link>
+        <Link to="/friend-requests" onClick={() => setMenuOpen(false)} className="w3-bar-item w3-button w3-padding-large">Friend Requests</Link>
       </div>
     </>
   )
