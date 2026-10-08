@@ -9,6 +9,7 @@ import UpcomingEvent from '../components/UpcomingEvent'
 import FriendRequest from '../components/FriendRequest'
 
 export default function HomePage({
+  user,
   userPosts,
   postInteractions,
   onPublishPost,
@@ -20,7 +21,7 @@ export default function HomePage({
     <div className="w3-container w3-content" style={{ maxWidth: '1400px', marginTop: '80px' }}>
       <div className="w3-row">
         <div className="w3-col m3">
-          <Profile /><br />
+          <Profile user={user} /><br />
           <GroupsAccordion /><br />
           <Interests /><br />
           <AlertBox />

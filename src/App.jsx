@@ -2,14 +2,31 @@ import { useEffect, useState } from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
+import AuthPage from './pages/AuthPage'
 import HomePage from './pages/HomePage'
 import ProfilePage from './pages/ProfilePage'
 import PostsPage from './pages/PostsPage'
 import CommentsPage from './pages/CommentsPage'
 import FriendRequestsPage from './pages/FriendRequestsPage'
+import SearchPage from './pages/SearchPage'
 
 const POSTS_STORAGE_KEY = 'red-social-posts'
 const INTERACTIONS_STORAGE_KEY = 'red-social-interactions'
+const SESSION_STORAGE_KEY = 'red-social-session'
+
+function getSavedSession() {
+  try {
+    const savedSession = JSON.parse(localStorage.getItem(SESSION_STORAGE_KEY) || 'null')
+    return savedSession
+      && typeof savedSession.id !== 'undefined'
+      && typeof savedSession.nombre === 'string'
+      && typeof savedSession.email === 'string'
+      ? savedSession
+      : null
+  } catch {
+    return null
+  }
+}
 
 function getSavedPosts() {
   try {
@@ -34,6 +51,7 @@ function getSavedInteractions() {
 function App() {
   const [userPosts, setUserPosts] = useState(getSavedPosts)
   const [postInteractions, setPostInteractions] = useState(getSavedInteractions)
+  const [session, setSession] = useState(getSavedSession)
 
   useEffect(() => {
     try {
@@ -101,39 +119,64 @@ function App() {
     })
   }
 
+  function startSession(user) {
+    localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(user))
+    setSession(user)
+  }
+
+  function endSession() {
+    localStorage.removeItem(SESSION_STORAGE_KEY)
+    setSession(null)
+  }
+
   return (
     <BrowserRouter>
-      <Navbar />
+      {session && <Navbar user={session} onLogout={endSession} />}
       <Routes>
         <Route
           path="/"
           element={(
-            <HomePage
-              userPosts={userPosts}
-              postInteractions={postInteractions}
-              onPublishPost={publishPost}
-              onToggleLike={toggleLike}
-              onAddComment={addComment}
-              onDeletePost={deletePost}
-            />
+            session
+              ? (
+                <HomePage
+                  user={session}
+                  userPosts={userPosts}
+                  postInteractions={postInteractions}
+                  onPublishPost={publishPost}
+                  onToggleLike={toggleLike}
+                  onAddComment={addComment}
+                  onDeletePost={deletePost}
+                />
+              )
+              : <Navigate to="/auth" replace />
           )}
         />
-        <Route path="/profile" element={<ProfilePage />} />
+        <Route
+          path="/auth"
+          element={session ? <Navigate to="/" replace /> : <AuthPage onAuthSuccess={startSession} />}
+        />
+        <Route path="/login" element={<Navigate to="/auth" replace />} />
+        <Route path="/search" element={session ? <SearchPage /> : <Navigate to="/auth" replace />} />
+        <Route path="/profile" element={session ? <ProfilePage user={session} /> : <Navigate to="/auth" replace />} />
         <Route
           path="/posts"
           element={(
-            <PostsPage
-              userPosts={userPosts}
-              postInteractions={postInteractions}
-              onToggleLike={toggleLike}
-              onAddComment={addComment}
-              onDeletePost={deletePost}
-            />
+            session
+              ? (
+                <PostsPage
+                  userPosts={userPosts}
+                  postInteractions={postInteractions}
+                  onToggleLike={toggleLike}
+                  onAddComment={addComment}
+                  onDeletePost={deletePost}
+                />
+              )
+              : <Navigate to="/auth" replace />
           )}
         />
-        <Route path="/comments" element={<CommentsPage postInteractions={postInteractions} />} />
-        <Route path="/friend-requests" element={<FriendRequestsPage />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="/comments" element={session ? <CommentsPage postInteractions={postInteractions} /> : <Navigate to="/auth" replace />} />
+        <Route path="/friend-requests" element={session ? <FriendRequestsPage /> : <Navigate to="/auth" replace />} />
+        <Route path="*" element={<Navigate to={session ? '/' : '/auth'} replace />} />
       </Routes>
       <Footer />
     </BrowserRouter>

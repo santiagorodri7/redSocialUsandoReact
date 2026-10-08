@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
-export default function Navbar() {
+export default function Navbar({ user, onLogout }) {
   const [menuOpen, setMenuOpen] = useState(false)
 
   return (
@@ -30,6 +30,9 @@ export default function Navbar() {
           <Link to="/comments" className="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Comments" aria-label="Ir a comentarios">
             <i className="fa fa-envelope"></i>
           </Link>
+          <Link to="/search" className="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="Buscar personas y grupos" aria-label="Buscar personas y grupos">
+            <i className="fa fa-search"></i>
+          </Link>
           <div className="w3-dropdown-hover w3-hide-small">
             <Link to="/comments" className="w3-button w3-padding-large" title="Notifications" aria-label="Ir a actividad y comentarios">
               <i className="fa fa-bell"></i>
@@ -41,9 +44,16 @@ export default function Navbar() {
               <Link to="/posts" className="w3-bar-item w3-button">Jane likes your post</Link>
             </div>
           </div>
-          <Link to="/profile" className="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white" title="My Account" aria-label="Ir a mi perfil">
-            <img src="https://www.w3schools.com//w3images/avatar2.png" className="w3-circle" style={{ height: '23px', width: '23px' }} alt="Avatar" />
+          <Link to="/profile" className="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white" title="Mi perfil">
+            {user.nombre}
           </Link>
+          <button
+            type="button"
+            className="w3-bar-item w3-button w3-right w3-padding-large w3-hover-white"
+            onClick={onLogout}
+          >
+            Cerrar sesión
+          </button>
         </div>
       </div>
 
@@ -51,7 +61,18 @@ export default function Navbar() {
         <Link to="/posts" onClick={() => setMenuOpen(false)} className="w3-bar-item w3-button w3-padding-large">Posts</Link>
         <Link to="/profile" onClick={() => setMenuOpen(false)} className="w3-bar-item w3-button w3-padding-large">My Profile</Link>
         <Link to="/comments" onClick={() => setMenuOpen(false)} className="w3-bar-item w3-button w3-padding-large">Comments</Link>
+        <Link to="/search" onClick={() => setMenuOpen(false)} className="w3-bar-item w3-button w3-padding-large">Buscar personas y grupos</Link>
         <Link to="/friend-requests" onClick={() => setMenuOpen(false)} className="w3-bar-item w3-button w3-padding-large">Friend Requests</Link>
+        <button
+          type="button"
+          onClick={() => {
+            setMenuOpen(false)
+            onLogout()
+          }}
+          className="w3-bar-item w3-button w3-padding-large"
+        >
+          Cerrar sesión
+        </button>
       </div>
     </>
   )
